@@ -1,0 +1,14 @@
+{
+  "name": "distantsuncounselling.com",
+  "version": "1.0.0",
+  "description": "Public website for www.distantsuncounselling.com",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/catehawke/distantsuncounselling.com.git"
+  },
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/catehawke/distantsuncounselling.com#readme"
+}
