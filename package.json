@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "Public website for www.distantsuncounselling.com",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/catehawke/distantsuncounselling.com.git"
   },
   "license": "UNLICENSED",
-  "homepage": "https://github.com/catehawke/distantsuncounselling.com#readme"
+  "homepage": "https://github.com/catehawke/distantsuncounselling.com#readme",
+  "dependencies": {
+    "sendmail": "^1.6.1"
+  }
 }
