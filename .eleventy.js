@@ -1,6 +1,9 @@
 module.exports = function(eleventyConfig) {
-  const ENV_DEV = process.env.ELEVENTY_ENV === 'dev';
+  const ENV_PROD = process.env.ELEVENTY_ENV === 'prod';
 
+
+  // Static files
+  eleventyConfig.addPassthroughCopy("site/css/");
 
   // Transform Markdown content
   const markdownIt = require("markdown-it");
@@ -18,7 +21,7 @@ module.exports = function(eleventyConfig) {
       return htmlmin.minify(content, {
         useShortDoctype: true,
         removeComments: false, // comments identify the excerpt split marker?
-        collapseWhitespace: !ENV_DEV,
+        collapseWhitespace: ENV_PROD,
       });
     }
     return content;

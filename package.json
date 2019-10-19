@@ -4,10 +4,11 @@
   "description": "Public website for www.distantsuncounselling.com",
   "author": "Cate Hawke",
   "scripts": {
-    "build": "ELEVENTY_ENV=prod eleventy",
-    "dev": "ELEVENTY_ENV=dev eleventy",
-    "watch": "ELEVENTY_ENV=dev eleventy --watch",
-    "debug": "ELEVENTY_ENV=dev DEBUG=* eleventy"
+    "build" : "ELEVENTY_ENV=prod npm run tasks",
+    "dev"   : "ELEVENTY_ENV=dev npm run tasks",
+    "watch" : "ELEVENTY_ENV=dev gulp watch & eleventy --watch",
+    "debug" : "ELEVENTY_ENV=dev DEBUG=*  npm run tasks",
+    "tasks" : "gulp build & eleventy"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,11 @@
   "dependencies": {},
   "devDependencies": {
     "@11ty/eleventy": "^0.9.0",
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
     "html-minifier": "^4.0.0",
-    "markdown-it": "^10.0.0"
+    "markdown-it": "^10.0.0",
+    "node-sass": "^4.12.0"
   }
 }

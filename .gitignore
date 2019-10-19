@@ -3,3 +3,4 @@ logs
 .npm
 node_modules/
 dist/
+site/css/
