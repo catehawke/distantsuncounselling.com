@@ -7,8 +7,8 @@
     "build": "ELEVENTY_ENV=prod npm run tasks",
     "dev": "ELEVENTY_ENV=dev npm run tasks",
     "watch": "ELEVENTY_ENV=dev gulp watch & eleventy --watch",
-    "debug": "ELEVENTY_ENV=dev DEBUG=*  npm run tasks",
-    "tasks": "gulp clean & gulp build & eleventy"
+    "debug": "ELEVENTY_ENV=dev DEBUG=* npm run tasks",
+    "tasks": "gulp build & eleventy"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,4 @@
-const { src, dest, watch } = require('gulp');
+const { src, dest, series, watch } = require('gulp');
 const clean = require('gulp-clean');
 const gulpIf = require('gulp-if');
 const sass = require("gulp-sass");
@@ -9,6 +9,13 @@ const ENV_PROD = process.env.ELEVENTY_ENV === 'prod';
 const sassPath = 'site/sass/*.scss';
 const cleanPath = ['dist/', 'site/css/'];
 
+
+function cleanTarget () {
+  return src(cleanPath, {
+      read: false,
+      allowEmpty: true
+    }).pipe(clean());
+}
 
 function css () {
   const options = {
@@ -22,11 +29,11 @@ function css () {
     .pipe(dest('site/css'));
 };
 
-exports.build = css;
+
+exports.build = ENV_PROD
+  ? css
+  : series(cleanTarget, css);
+
 exports.watch = function () {
   watch(sassPath, { ignoreInitial: false }, css);
 };
-exports.clean = function () {
-  return src(cleanPath, { read: false, allowEmpty: true })
-    .pipe(clean());
-}
