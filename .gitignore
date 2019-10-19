@@ -1,6 +1,10 @@
 logs
 *.log
+
+# npm and cache
 .npm
 node_modules/
+
+# Build artifacts
 dist/
 site/css/
