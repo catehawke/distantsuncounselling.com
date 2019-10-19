@@ -1,5 +1,5 @@
 logs
 *.log
-
-node_modules/
 .npm
+node_modules/
+dist/

@@ -2,15 +2,22 @@
   "name": "distantsuncounselling.com",
   "version": "1.0.0",
   "description": "Public website for www.distantsuncounselling.com",
-  "main": "index.js",
-  "scripts": {},
+  "author": "Cate Hawke",
+  "scripts": {
+    "build": "ELEVENTY_ENV=prod eleventy",
+    "watch": "ELEVENTY_ENV=dev eleventy --watch",
+    "debug": "ELEVENTY_ENV=dev DEBUG=* eleventy"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/catehawke/distantsuncounselling.com.git"
   },
+  "private": true,
   "license": "UNLICENSED",
   "homepage": "https://github.com/catehawke/distantsuncounselling.com#readme",
-  "dependencies": {
-    "sendmail": "^1.6.1"
+  "dependencies": {},
+  "devDependencies": {
+    "@11ty/eleventy": "^0.9.0",
+    "markdown-it": "^10.0.0"
   }
 }
