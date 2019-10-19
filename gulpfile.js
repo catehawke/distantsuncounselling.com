@@ -16,9 +16,9 @@ function css () {
   };
 
   return src(sassPath)
-    .pipe(gulpIf(ENV_PROD, sassMaps.init()))
+    .pipe(gulpIf(!ENV_PROD, sassMaps.init()))
     .pipe(sass(options).on('error', sass.logError))
-    .pipe(gulpIf(ENV_PROD, sassMaps.write()))
+    .pipe(gulpIf(!ENV_PROD, sassMaps.write()))
     .pipe(dest('site/css'));
 };
 
