@@ -1,20 +1,36 @@
-const { src, dest, series, watch } = require('gulp');
+const {
+  src,
+  dest,
+  series,
+  parallel,
+  watch
+} = require('gulp');
 const clean = require('gulp-clean');
 const gulpIf = require('gulp-if');
 const sass = require("gulp-sass");
-const sassMaps = require('gulp-sourcemaps');
+const sourcemaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
+const concat = require('gulp-concat');
 
 
 const ENV_PROD = process.env.ELEVENTY_ENV === 'prod';
-const sassPath = 'site/sass/*.scss';
-const cleanPath = ['dist/', 'site/css/'];
+const sassPath = 'src/sass/*.scss';
+const jsPath = 'src/js/**/*.js';
+const cleanPath = [
+  'dist/',
+  'site/css/',
+  'site/js/'
+];
 
 
-function cleanTarget () {
-  return src(cleanPath, {
-      read: false,
-      allowEmpty: true
-    }).pipe(clean());
+function cleanDevEnv () {
+  const options = {
+    read: false,
+    allowEmpty: true
+  };
+
+  return src(cleanPath, options)
+    .pipe(gulpIf(!ENV_PROD, clean()));
 }
 
 function css () {
@@ -23,17 +39,25 @@ function css () {
   };
 
   return src(sassPath)
-    .pipe(gulpIf(!ENV_PROD, sassMaps.init()))
-    .pipe(sass(options).on('error', sass.logError))
-    .pipe(gulpIf(!ENV_PROD, sassMaps.write()))
+    .pipe(gulpIf(!ENV_PROD, sourcemaps.init()))
+      .pipe(sass(options).on('error', sass.logError))
+    .pipe(gulpIf(!ENV_PROD, sourcemaps.write()))
     .pipe(dest('site/css'));
 };
 
+function js () {
+  return src(jsPath)
+    .pipe(gulpIf(!ENV_PROD, sourcemaps.init()))
+      .pipe(concat('main.js'))
+      .pipe(uglify())
+    .pipe(gulpIf(!ENV_PROD, sourcemaps.write()))
+    .pipe(dest('site/js'));
+}
 
-exports.build = ENV_PROD
-  ? css
-  : series(cleanTarget, css);
+exports.build = series(cleanDevEnv, parallel(js, css));
 
 exports.watch = function () {
-  watch(sassPath, { ignoreInitial: false }, css);
+  const options = { ignoreInitial: false };
+  watch(sassPath, options, css);
+  watch(jsPath, options, js);
 };
