@@ -4,17 +4,15 @@
   data-netlify="true"
   netlify-honeypot="turing"
 >
+  <input type="hidden" name="subject" value="Contact from page '{{ title }}'"/>
   <p>
     <label>Your Name: <input type="text" name="name"/></label>
   </p>
   <p>
     <label>Your Email: <input type="email" name="email"/></label>
   </p>
-  <p style="display:none">
-      <label>Don’t fill this out if you're human: <input name="turing" /></label>
-  </p>
-  <p>
-    <label>Subject: <input type="text" name="subject"/></label>
+  <p class="form-turing">
+      <label>Don’t fill this out if you're human: <input type="text" name="turing" /></label>
   </p>
   <p>
     <label>Message: <textarea name="message"></textarea></label>
