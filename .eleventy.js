@@ -11,6 +11,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("site/js/");
   eleventyConfig.addPassthroughCopy("site/images/");
 
+
   // Transform Markdown content
   const markdownIt = require("markdown-it");
   eleventyConfig.setLibrary("md", markdownIt({
@@ -19,6 +20,7 @@ module.exports = function(eleventyConfig) {
     linkify: true, // auto-convert urls to links (uses linkify-it)
   }));
 
+
   // Lazy-load images
   const lazyConfig = {
     //imgSelector: '.post-content img', // custom image selector
@@ -26,6 +28,7 @@ module.exports = function(eleventyConfig) {
     transformImgPath: src => src.replace(/^\.?\/images/, './site/images'),
   }
   eleventyConfig.addPlugin(lazyImagesPlugin, lazyConfig);
+
 
   // minify the html output
   const htmlmin = require("html-minifier");
@@ -40,6 +43,7 @@ module.exports = function(eleventyConfig) {
     return content;
   });
 
+
   return {
     templateFormats : ["njk", "md"],
     htmlTemplateEngine : "njk",
@@ -48,8 +52,8 @@ module.exports = function(eleventyConfig) {
     pathPrefix: "/",
     dir: {
       input: "site",
-      data: "site/_data",
-      output: "dist"
+      data: "_data",
+      output: "dist" // relative to input
     }
   };
 }

@@ -7,7 +7,7 @@
     "build": "ELEVENTY_ENV=prod npm run tasks",
     "build:dev": "ELEVENTY_ENV=dev npm run tasks",
     "dev": "ELEVENTY_ENV=dev gulp watch & eleventy --serve",
-    "serve": "npm build & serve dist",
+    "serve": "npm run build & serve dist",
     "debug": "ELEVENTY_ENV=dev DEBUG=* npm run tasks",
     "tasks": "gulp build & eleventy",
     "clean": "ELEVENTY_ENV=dev gulp clean"
