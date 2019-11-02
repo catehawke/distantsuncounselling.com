@@ -9,6 +9,7 @@ module.exports = function(eleventyConfig) {
   // Static files
   eleventyConfig.addPassthroughCopy("site/css/");
   eleventyConfig.addPassthroughCopy("site/js/");
+  eleventyConfig.addPassthroughCopy("site/images/");
 
   // Transform Markdown content
   const markdownIt = require("markdown-it");
@@ -19,10 +20,12 @@ module.exports = function(eleventyConfig) {
   }));
 
   // Lazy-load images
-  eleventyConfig.addPlugin(lazyImagesPlugin, {
+  const lazyConfig = {
     //imgSelector: '.post-content img', // custom image selector
-    //cacheFile: '', // don't cache results to a file
-  });
+    appendInitScript: false, // included in the main.js
+    transformImgPath: src => src.replace(/^\.?\/images/, './site/images'),
+  }
+  eleventyConfig.addPlugin(lazyImagesPlugin, lazyConfig);
 
   // minify the html output
   const htmlmin = require("html-minifier");

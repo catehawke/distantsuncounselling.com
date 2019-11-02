@@ -12,10 +12,14 @@ const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 
+const lazysizes = require.resolve('lazysizes');
 
 const ENV_PROD = process.env.ELEVENTY_ENV === 'prod';
 const sassPath = 'src/sass/*.scss';
-const jsPath = 'src/js/**/*.js';
+const jsPath = [
+  lazysizes,
+  'src/js/**/*.js'
+];
 const cleanPath = [
   'dist/',
   'site/css/',
@@ -55,6 +59,8 @@ function js () {
 }
 
 exports.build = series(cleanDevEnv, parallel(js, css));
+
+exports.clean = cleanDevEnv;
 
 exports.watch = function () {
   const options = { ignoreInitial: false };
