@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{%- if title -%}{{ title }}{%- else -%}{{ site.description }}{%- endif -%}</title>
   <meta name="description" content="{%- if description -%}{{ description }}{%- else -%}{{ site.description }}{%- endif -%}">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300|Open+Sans:400,600&display=swap">
   <link rel="stylesheet" href="/css/main.css">
-  <script src="/js/main.js"></script>
+
+  <script async src="/js/main.js"></script>
 </head>
 <body>
 {{ layoutContent | safe }}

@@ -2,6 +2,17 @@ body {
   margin: 20px;
 }
 
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6,
+.heading-text {
+  font-family: 'Muli', sans-serif;
+  font-weight: 300;
+}
+
+
 .form-turing {
   display: none !important;
 }
