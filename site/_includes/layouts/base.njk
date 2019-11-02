@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{%- if title -%}{{ title }}{%- else -%}Distant Sun Counselling{%- endif -%}</title>
+  <title>{%- if title -%}{{ title }}{%- else -%}{{ site.description }}{%- endif -%}</title>
+  <meta name="description" content="{%- if description -%}{{ description }}{%- else -%}{{ site.description }}{%- endif -%}">
   <link rel="stylesheet" href="/css/main.css">
   <script src="/js/main.js"></script>
 </head>
