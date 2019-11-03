@@ -1,9 +1,14 @@
+@import "./variables";
+
+
 body {
   margin: 0;
+  line-height: 1.5;
 }
 
 body {
   font-family: 'Open Sans', sans-serif;
+  color: $color-text;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -12,9 +17,23 @@ h1, h2, h3, h4, h5, h6,
   font-weight: 300;
 }
 
+h1 {
+  color: $color-satellite;
+}
+
+a {
+  text-decoration: none;
+
+  &:link { color: $color-link }
+  &:visited { color: $color-visited }
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
 .home-header {
-  padding: 2rem;
-  background: #241b0f;
+  padding: 1rem 2rem;
 }
 
 .header-logo {
@@ -24,7 +43,30 @@ h1, h2, h3, h4, h5, h6,
 
 main,
 footer {
-  padding: 2rem;
+  padding: 1rem 2rem;
+
+  .wrapper {
+    margin: 1rem auto;
+    max-width: 680px;
+  }
+}
+
+main {
+  // make sure footer stays at bottom on short pages
+  min-height: calc(100vh - 400px);
+}
+
+footer {
+  background-color: $color-sun-1;
+  color: $color-text-inverse;
+  a {
+    &:link,
+    &:visited { color: $color-text-inverse }
+  }
+}
+
+.contact {
+  //font-size: 0.875rem;
 }
 
 .form-turing {

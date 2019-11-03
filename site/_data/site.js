@@ -1,4 +1,6 @@
 module.exports = {
   title: 'Distant Sun Counselling',
-  description: 'This is a general fallback description of the site',
+  description: '',
+  email: 'cate@distantsuncounselling.com',
+  phone: '+44 7307 694693',
 };
