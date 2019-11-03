@@ -1,5 +1,5 @@
 body {
-  margin: 20px;
+  margin: 0;
 }
 
 body {
@@ -12,13 +12,27 @@ h1, h2, h3, h4, h5, h6,
   font-weight: 300;
 }
 
+.home-header {
+  padding: 2rem;
+  background: #241b0f;
+}
+
+.header-logo {
+  display: block;
+  margin: 0 auto;
+}
+
+main,
+footer {
+  padding: 2rem;
+}
 
 .form-turing {
   display: none !important;
 }
 
 // Lazy responsive images
-img {
+img:not([src$=".svg"]) {
   display: block;
   width: 100%;
   max-width: 100%;

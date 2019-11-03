@@ -11,11 +11,15 @@ const sass = require("gulp-sass");
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
+const svgo = require('gulp-svgo');
+const file = require('gulp-file');
+
 
 const lazysizes = require.resolve('lazysizes');
 
 const ENV_PROD = process.env.ELEVENTY_ENV === 'prod';
 const sassPath = 'src/sass/*.scss';
+const svgPath = 'src/svg/*.svg';
 const jsPath = [
   lazysizes,
   'src/js/**/*.js'
@@ -58,12 +62,33 @@ function js () {
     .pipe(dest('site/js'));
 }
 
-exports.build = series(cleanDevEnv, parallel(js, css));
+function svg () {
+  const options = {
+    plugins: [
+      { removeTitle: false }
+    ]
+  };
+
+  return src(svgPath)
+    .pipe(svgo(options))
+    .pipe(dest('site/svg/'));
+}
+
+// touch triggers an 11ty watch in the _includes dir
+// waiting for https://github.com/11ty/eleventy/pull/641
+function touch () {
+  const content = `<html>${Number(new Date())}</html>`;
+  return file('touch.html', content, { src: true })
+  .pipe(dest('site/_includes'));
+};
+
+exports.build = series(cleanDevEnv, parallel(js, css, svg));
 
 exports.clean = cleanDevEnv;
 
 exports.watch = function () {
   const options = { ignoreInitial: false };
-  watch(sassPath, options, css);
-  watch(jsPath, options, js);
+  watch(svgPath, options, series(svg, touch));
+  watch(sassPath, options, series(css, touch));
+  watch(jsPath, options, series(js, touch));
 };
