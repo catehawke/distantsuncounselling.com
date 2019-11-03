@@ -52,6 +52,7 @@ footer {
 }
 
 main {
+  display: block; // for IE11
   // make sure footer stays at bottom on short pages
   min-height: calc(100vh - 400px);
 }
