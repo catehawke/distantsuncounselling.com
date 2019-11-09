@@ -15,13 +15,17 @@
   <script async src="/js/main.js"></script>
 </head>
 <body>
-<header class="home-header">
+{% block header %}
+<header class="page-header">
   <img class="header-logo" alt="Distant Sun Counselling" src="/svg/primary-logo.svg" height="200">
 </header>
+{% endblock header %}
 <main>
   <div class="wrapper">
 
-{{ layoutContent | safe }}
+  {% block content %}
+    {{ content | safe }}
+  {% endblock %}
 
   </div>
 </main>

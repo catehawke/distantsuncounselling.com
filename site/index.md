@@ -1,5 +1,5 @@
 ---
-layout: layouts/base.njk
+layout: layouts/home.njk
 title: Distant Sun Counselling - website coming
 ---
 # Hello...
