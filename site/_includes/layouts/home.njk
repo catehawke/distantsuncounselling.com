@@ -1,6 +1,29 @@
----
-layout: layouts/base.njk
----
+{% extends "layouts/base.njk" %}
+
+{% block header %}
+
+  <div class="sticky-page-nav">
+    {% include 'components/home-section-menu.njk' %}
+  </div>
+  <header class="page-header">
+    <img class="header-logo" alt="Distant Sun Counselling" src="/svg/primary-logo.svg" height="200">
+  </header>
+{% endblock header %}
+
 {% block content %}
-    {{ content | safe }}
+  <main>
+    <div class="wrapper">
+      {{ content | safe }}
+    </div>
+  </main>
+
+  {% for section in collections.homeSections %}
+    <section id="{{ section.data.title | slug }}" class="home-section">
+      <div class="wrapper">
+        <h2>{{ section.data.title }}</h2>
+        {{ section.templateContent | safe }}
+      </div>
+    </section>
+  {% endfor %}
 {% endblock %}
+

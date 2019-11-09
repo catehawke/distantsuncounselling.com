@@ -1,0 +1,5 @@
+<nav class="section-menu">
+  {% for section in collections.homeSections %}
+    <a href="#{{ section.data.title | slug }}">{{ section.data.title }}</a>
+  {% endfor %}
+</nav>

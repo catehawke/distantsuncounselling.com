@@ -3,11 +3,9 @@
 
 body {
   margin: 0;
-  line-height: 1.5;
-}
-
-body {
   font-family: 'Open Sans', sans-serif;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
   color: $color-text;
 }
 
@@ -17,7 +15,7 @@ h1, h2, h3, h4, h5, h6,
   font-weight: 300;
 }
 
-h1 {
+h1, h2 {
   color: $color-satellite;
 }
 
@@ -42,12 +40,13 @@ a {
 }
 
 main,
+section,
 footer {
   padding: 1rem 2rem;
 
   .wrapper {
     margin: 1rem auto;
-    max-width: 680px;
+    max-width: $page-col-width;
   }
 }
 
@@ -57,17 +56,15 @@ main {
   min-height: calc(100vh - 400px);
 }
 
-footer {
+footer,
+.section-menu
+ {
   background-color: $color-sun-1;
   color: $color-text-inverse;
   a {
     &:link,
     &:visited { color: $color-text-inverse }
   }
-}
-
-.contact {
-  //font-size: 0.875rem;
 }
 
 .form-turing {
@@ -80,4 +77,46 @@ img:not([src$=".svg"]) {
   width: 100%;
   max-width: 100%;
   height: auto;
+}
+
+$page-nav-font-size: $base-font-size;
+$page-nav-v-padding: .5rem;
+$sticky-page-nav-height: (
+  $page-nav-font-size * $base-line-height
+  + $page-nav-v-padding * 2
+);
+
+
+.home-section {
+  height: 50vh;// temp
+  padding-top: $sticky-page-nav-height;
+}
+
+.section-menu {
+  display: flex;
+  justify-content: flex-end;
+  font-size: $page-nav-font-size;
+  padding: 0 0.5rem;
+  background: #fff;
+
+  a {
+    &:link,
+    &:visited { color: $color-text }
+  }
+
+  > * {
+    padding: $page-nav-v-padding;
+  }
+}
+
+.sticky-page-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  box-shadow: 0 0 .5rem rgba(0, 0, 0, .3);
+
+  + * {
+    margin-top: $sticky-page-nav-height;
+  }
 }

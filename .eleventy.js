@@ -5,8 +5,13 @@ const obfuscate = require('./site/_shortcodes/obfuscate');
 module.exports = function(eleventyConfig) {
   const ENV_PROD = process.env.ELEVENTY_ENV === 'prod';
 
+  // Collections
+  eleventyConfig.addCollection('homeSections', function(collection) {
+    return collection.getFilteredByGlob('site/home/*.md');
+  });
+
   // Add Nunjucks shortcodes
-  eleventyConfig.addNunjucksShortcode("obfuscate", obfuscate);
+  eleventyConfig.addNunjucksShortcode('obfuscate', obfuscate);
 
 
   // Static files

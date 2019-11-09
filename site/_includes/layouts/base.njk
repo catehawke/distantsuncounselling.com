@@ -16,19 +16,19 @@
 </head>
 <body>
 {% block header %}
-<header class="page-header">
-  <img class="header-logo" alt="Distant Sun Counselling" src="/svg/primary-logo.svg" height="200">
-</header>
+  <header class="page-header">
+    <img class="header-logo" alt="Distant Sun Counselling" src="/svg/primary-logo.svg" height="200">
+  </header>
 {% endblock header %}
-<main>
-  <div class="wrapper">
 
-  {% block content %}
-    {{ content | safe }}
-  {% endblock %}
+{% block content %}
+  <main>
+    <div class="wrapper">
+      {{ content | safe }}
+    </div>
+  </main>
+{% endblock %}
 
-  </div>
-</main>
 <footer>
   <div class="wrapper contact">
     Contact:
