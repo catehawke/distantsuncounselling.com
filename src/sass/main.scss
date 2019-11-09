@@ -79,7 +79,8 @@ img:not([src$=".svg"]) {
   height: auto;
 }
 
-$page-nav-font-size: $base-font-size;
+// Define dimensions so we know the page-nav height
+$page-nav-font-size: $base-font-size * .875;
 $page-nav-v-padding: .5rem;
 $sticky-page-nav-height: (
   $page-nav-font-size * $base-line-height
@@ -100,8 +101,16 @@ $sticky-page-nav-height: (
   background: #fff;
 
   a {
+    min-width: 1em;
+    text-align: center;
+    transition: color .3s ease-in;
+
     &:link,
-    &:visited { color: $color-text }
+    &:visited {
+      color: lighten($color-text, 30%);
+      text-decoration: none;
+    }
+    &:hover { color: lighten($color-text, 0) }
   }
 
   > * {
@@ -118,5 +127,20 @@ $sticky-page-nav-height: (
 
   + * {
     margin-top: $sticky-page-nav-height;
+  }
+}
+
+// smooth scrolling
+@media not screen and (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  section {
+    transition: background-color  .8s .5s ease-in;
+  }
+
+  :target {
+    background-color: lighten($color-sun-1, 35%);
   }
 }
