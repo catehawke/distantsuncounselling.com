@@ -111,6 +111,7 @@ $sticky-page-nav-height: (
       text-decoration: none;
     }
     &:hover { color: lighten($color-text, 0) }
+    &.active { color: $color-satellite }
   }
 
   > * {

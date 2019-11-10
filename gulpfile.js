@@ -9,7 +9,6 @@ const concat = require('gulp-concat');
 const svgo = require('gulp-svgo');
 
 const lazysizes = require.resolve('lazysizes');
-const gumshoePath = path.dirname(require.resolve('gumshoejs'));
 
 const ENV_PROD = process.env.ELEVENTY_ENV === 'prod';
 const sassPath = 'src/sass/*.scss';
@@ -19,8 +18,12 @@ const svgPath = 'src/svg/*.svg';
 const jsPath = [
   'src/js/pre/**/*.js',
   lazysizes,
-  path.join(gumshoePath, './gumshoe.js'),
-  'src/js/feature/**/*.js',
+  'src/js/feature/**/*.js'
+];
+const cleanPath = [
+  'dist/',
+  'site/css/',
+  'site/js/'
 ];
 const cleanPath = ['dist/', 'site/css/', 'site/js/'];
 
