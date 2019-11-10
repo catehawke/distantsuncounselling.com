@@ -1,3 +1,4 @@
+const path = require('path');
 const { src, dest, series, parallel, watch } = require('gulp');
 const clean = require('gulp-clean');
 const gulpIf = require('gulp-if');
@@ -8,11 +9,19 @@ const concat = require('gulp-concat');
 const svgo = require('gulp-svgo');
 
 const lazysizes = require.resolve('lazysizes');
+const gumshoePath = path.dirname(require.resolve('gumshoejs'));
 
 const ENV_PROD = process.env.ELEVENTY_ENV === 'prod';
 const sassPath = 'src/sass/*.scss';
 const svgPath = 'src/svg/*.svg';
-const jsPath = [lazysizes, 'src/js/**/*.js'];
+
+// TODO: do we need a pre and post script load?
+const jsPath = [
+  'src/js/pre/**/*.js',
+  lazysizes,
+  path.join(gumshoePath, './gumshoe.js'),
+  'src/js/feature/**/*.js',
+];
 const cleanPath = ['dist/', 'site/css/', 'site/js/'];
 
 function cleanDevEnv() {
@@ -39,7 +48,7 @@ function css() {
 function js() {
   return src(jsPath)
     .pipe(gulpIf(!ENV_PROD, sourcemaps.init()))
-    .pipe(concat('main.js'))
+    .pipe(concat({ path: 'main.js' }))
     .pipe(uglify())
     .pipe(gulpIf(!ENV_PROD, sourcemaps.write()))
     .pipe(dest('site/js'));

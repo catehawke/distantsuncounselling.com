@@ -21,6 +21,7 @@
   "license": "UNLICENSED",
   "homepage": "https://github.com/catehawke/distantsuncounselling.com#readme",
   "dependencies": {
+    "gumshoejs": "^5.1.2",
     "lazysizes": "^5.2.0"
   },
   "devDependencies": {
