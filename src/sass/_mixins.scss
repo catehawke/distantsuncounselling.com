@@ -1,0 +1,16 @@
+@import "./mixins/elevation";
+
+
+@mixin absolute-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+@mixin generated-box () {
+  display: block;
+  content: '';
+  @include absolute-fill;
+}

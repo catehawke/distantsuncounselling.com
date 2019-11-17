@@ -21,6 +21,7 @@
   "license": "UNLICENSED",
   "homepage": "https://github.com/catehawke/distantsuncounselling.com#readme",
   "dependencies": {
+    "intersection-observer": "^0.10.0",
     "lazysizes": "^5.2.0"
   },
   "devDependencies": {

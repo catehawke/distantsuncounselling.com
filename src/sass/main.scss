@@ -1,4 +1,5 @@
 @import "./variables";
+@import "./mixins";
 
 
 body {
@@ -124,10 +125,23 @@ $sticky-page-nav-height: (
   left: 0;
   right: 0;
   top: 0;
-  box-shadow: 0 0 .5rem rgba(0, 0, 0, .3);
 
-  + * {
-    margin-top: $sticky-page-nav-height;
+  // put box-shadow on generated element for transition perf
+  &::after {
+    @include generated-box;
+    @include elevation(4);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.7, 0, 0.3, 1);
+  }
+
+  &.elevated::after {
+    opacity: 1;
+  }
+
+  &--shim {
+    display: block;
+    height: $sticky-page-nav-height;
   }
 }
 
@@ -141,7 +155,7 @@ $sticky-page-nav-height: (
     transition: background-color  .8s .5s ease-in;
   }
 
-  :target {
+  .home-section.active {
     background-color: lighten($color-sun-1, 35%);
   }
 }
