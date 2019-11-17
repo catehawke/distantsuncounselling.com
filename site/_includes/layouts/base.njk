@@ -8,7 +8,7 @@
   <meta name="description" content="{%- if description -%}{{ description }}{%- else -%}{{ site.description }}{%- endif -%}">
   {%- endif -%}
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300|Open+Sans:400,600&display=swap">
+  <link rel="stylesheet" rel="preconnect" crossorigin href="https://fonts.googleapis.com/css?family=Muli:300|Open+Sans:400,600&display=swap">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="icon" type="image/png" sizes="64x64" href="/images/icons/icon-64x64.png">
   <link rel="manifest" href="/manifest.json">
@@ -20,7 +20,6 @@
     <img class="header-logo" alt="Distant Sun Counselling" src="/svg/primary-logo.svg" height="200">
   </header>
 {% endblock header %}
-
 {% block content %}
   <main>
     <div class="wrapper">
@@ -28,7 +27,6 @@
     </div>
   </main>
 {% endblock %}
-
 <footer>
   <div class="wrapper contact">
     Contact:
