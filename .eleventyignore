@@ -5,6 +5,7 @@ logs
 # npm and cache
 .npm
 node_modules/
+.eslintcache
 /functions
 
 # Build artifacts
