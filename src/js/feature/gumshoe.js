@@ -191,7 +191,9 @@
      * @return {Boolean}         If true, use the last item
      */
     var useLastItem = function (item, settings) {
-      if (isAtBottom() && isInView(item.content, settings, true)) return true;
+      if (isAtBottom() && item && isInView(item.content, settings, true)) {
+        return true;
+      }
       return false;
     };
 
@@ -211,7 +213,7 @@
 
     /**
      * Return the element for the active class toggle
-     * @param {Node} nav The navigation eleemnt
+     * @param {Node} nav The navigation element
      * @param {Object} settings The settings for this instantiation
      */
     var getNodeToActivate = function (nav, settings) {
