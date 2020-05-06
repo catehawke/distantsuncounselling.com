@@ -1,76 +1,56 @@
-const {
-  src,
-  dest,
-  series,
-  parallel,
-  watch
-} = require('gulp');
+const { src, dest, series, parallel, watch } = require('gulp');
 const clean = require('gulp-clean');
 const gulpIf = require('gulp-if');
-const sass = require("gulp-sass");
+const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 const svgo = require('gulp-svgo');
-
 
 const lazysizes = require.resolve('lazysizes');
 
 const ENV_PROD = process.env.ELEVENTY_ENV === 'prod';
 const sassPath = 'src/sass/*.scss';
 const svgPath = 'src/svg/*.svg';
-const jsPath = [
-  lazysizes,
-  'src/js/**/*.js'
-];
-const cleanPath = [
-  'dist/',
-  'site/css/',
-  'site/js/'
-];
+const jsPath = [lazysizes, 'src/js/**/*.js'];
+const cleanPath = ['dist/', 'site/css/', 'site/js/'];
 
-
-function cleanDevEnv () {
+function cleanDevEnv() {
   const options = {
     read: false,
-    allowEmpty: true
+    allowEmpty: true,
   };
 
-  return src(cleanPath, options)
-    .pipe(gulpIf(!ENV_PROD, clean()));
+  return src(cleanPath, options).pipe(gulpIf(!ENV_PROD, clean()));
 }
 
-function css () {
+function css() {
   const options = {
     outputStyle: ENV_PROD ? 'compressed' : 'expanded',
   };
 
   return src(sassPath)
     .pipe(gulpIf(!ENV_PROD, sourcemaps.init()))
-      .pipe(sass(options).on('error', sass.logError))
+    .pipe(sass(options).on('error', sass.logError))
     .pipe(gulpIf(!ENV_PROD, sourcemaps.write()))
     .pipe(dest('site/css'));
-};
+}
 
-function js () {
+function js() {
   return src(jsPath)
     .pipe(gulpIf(!ENV_PROD, sourcemaps.init()))
-      .pipe(concat('main.js'))
-      .pipe(uglify())
+    .pipe(concat('main.js'))
+    .pipe(uglify())
     .pipe(gulpIf(!ENV_PROD, sourcemaps.write()))
     .pipe(dest('site/js'));
 }
 
-function svg () {
+function svg() {
   const options = {
-    plugins: [
-      { removeTitle: false }
-    ]
+    plugins: [{ removeTitle: false }],
   };
 
-  return src(svgPath)
-    .pipe(svgo(options))
-    .pipe(dest('site/svg/'));
+  return src(svgPath).pipe(svgo(options)).pipe(dest('site/svg/'));
 }
 
 exports.build = series(cleanDevEnv, parallel(js, css, svg));
