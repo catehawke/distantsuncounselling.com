@@ -12,7 +12,6 @@ const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 const svgo = require('gulp-svgo');
-const file = require('gulp-file');
 
 
 const lazysizes = require.resolve('lazysizes');
@@ -74,21 +73,13 @@ function svg () {
     .pipe(dest('site/svg/'));
 }
 
-// touch triggers an 11ty watch in the _includes dir
-// waiting for https://github.com/11ty/eleventy/pull/641
-function touch () {
-  const content = `<html>${Number(new Date())}</html>`;
-  return file('touch.html', content, { src: true })
-  .pipe(dest('site/_includes'));
-};
-
 exports.build = series(cleanDevEnv, parallel(js, css, svg));
 
 exports.clean = cleanDevEnv;
 
 exports.watch = function () {
   const options = { ignoreInitial: false };
-  watch(svgPath, options, series(svg, touch));
-  watch(sassPath, options, series(css, touch));
-  watch(jsPath, options, series(js, touch));
+  watch(svgPath, options, svg);
+  watch(sassPath, options, css);
+  watch(jsPath, options, js);
 };

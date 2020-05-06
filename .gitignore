@@ -1,5 +1,6 @@
 logs
 *.log
+*.vscode
 
 # npm and cache
 .npm
@@ -9,4 +10,3 @@ node_modules/
 dist/
 site/css/
 site/js/
-touch.html

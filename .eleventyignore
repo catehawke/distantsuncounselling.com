@@ -1,1 +1,11 @@
+logs
+*.log
+*.vscode
 
+# npm and cache
+.npm
+node_modules/
+/functions
+
+# Build artifacts
+dist/
