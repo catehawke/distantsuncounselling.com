@@ -1,9 +1,9 @@
-(function() {
+(function () {
   // detect window scroll
 
-  function scrollCb (entries) {
+  function scrollCb(entries) {
     var el = document.querySelector('.sticky-page-nav');
-    var isIntersecting = entries.some(function(item) {
+    var isIntersecting = entries.some(function (item) {
       return item.isIntersecting;
     });
 
@@ -18,12 +18,13 @@
   var observer = new IntersectionObserver(scrollCb, {
     root: null,
     rootMargin: '0px',
-    threshold: 1
+    threshold: 1,
   });
 
-
-  function onDomLoaded () {
-    var spy = new Gumshoe('.section-menu a', { activeNavTag: false });
+  function onDomLoaded() {
+    if ('Gumshoe' in window) {
+      new window.Gumshoe('.section-menu a', { activeNavTag: false });
+    }
 
     observer.observe(document.querySelector('.sticky-page-nav--shim'));
   }
@@ -34,5 +35,4 @@
   } else {
     window.addEventListener('DOMContentLoaded', onDomLoaded);
   }
-
 })();

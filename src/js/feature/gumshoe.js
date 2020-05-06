@@ -7,496 +7,476 @@
  *
  * This version modified to allow options to set nav parent.
  */
+/* eslint-env amd */
 
 (function (root, factory) {
-	if ( typeof define === 'function' && define.amd ) {
-		define([], (function () {
-			return factory(root);
-		}));
-	} else if ( typeof exports === 'object' ) {
-		module.exports = factory(root);
-	} else {
-		root.Gumshoe = factory(root);
-	}
-})(typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : this, (function (window) {
+  if (typeof define === 'function' && define.amd) {
+    define([], function () {
+      return factory(root);
+    });
+  } else if (typeof exports === 'object') {
+    module.exports = factory(root);
+  } else {
+    root.Gumshoe = factory(root);
+  }
+})(
+  typeof global !== 'undefined'
+    ? global
+    : typeof window !== 'undefined'
+    ? window
+    : this,
+  function (window) {
+    'use strict';
 
-	'use strict';
+    //
+    // Defaults
+    //
 
-	//
-	// Defaults
-	//
+    var defaults = {
+      // Active classes
+      navClass: 'active',
+      contentClass: 'active',
 
-	var defaults = {
+      // Nested navigation
+      nested: false,
+      nestedClass: 'active',
 
-		// Active classes
-		navClass: 'active',
-		contentClass: 'active',
+      // Offset & reflow
+      offset: 0,
+      reflow: false,
 
-		// Nested navigation
-		nested: false,
-		nestedClass: 'active',
+      // Event support
+      events: true,
 
-		// Offset & reflow
-		offset: 0,
-		reflow: false,
+      // Parent selector, set to false when parent not used
+      activeNavTag: 'li',
+    };
 
-		// Event support
-    events: true,
+    //
+    // Methods
+    //
 
-    // Parent selector, set to false when parent not used
-    activeNavTag: 'li'
-	};
+    /**
+     * Merge two or more objects together.
+     * @param   {Object}   objects  The objects to merge together
+     * @returns {Object}            Merged values of defaults and options
+     */
+    var extend = function () {
+      var merged = {};
+      Array.prototype.forEach.call(arguments, function (obj) {
+        for (var key in obj) {
+          if (!Object.prototype.hasOwnProperty.call(obj, key)) return;
+          merged[key] = obj[key];
+        }
+      });
+      return merged;
+    };
 
+    /**
+     * Emit a custom event
+     * @param  {String} type   The event type
+     * @param  {Node}   elem   The element to attach the event to
+     * @param  {Object} detail Any details to pass along with the event
+     */
+    var emitEvent = function (type, elem, detail) {
+      // Make sure events are enabled
+      if (!detail.settings.events) return;
 
-	//
-	// Methods
-	//
+      // Create a new event
+      var event = new CustomEvent(type, {
+        bubbles: true,
+        cancelable: true,
+        detail: detail,
+      });
 
-	/**
-	 * Merge two or more objects together.
-	 * @param   {Object}   objects  The objects to merge together
-	 * @returns {Object}            Merged values of defaults and options
-	 */
-	var extend = function () {
-		var merged = {};
-		Array.prototype.forEach.call(arguments, (function (obj) {
-			for (var key in obj) {
-				if (!obj.hasOwnProperty(key)) return;
-				merged[key] = obj[key];
-			}
-		}));
-		return merged;
-	};
+      // Dispatch the event
+      elem.dispatchEvent(event);
+    };
 
-	/**
-	 * Emit a custom event
-	 * @param  {String} type   The event type
-	 * @param  {Node}   elem   The element to attach the event to
-	 * @param  {Object} detail Any details to pass along with the event
-	 */
-	var emitEvent = function (type, elem, detail) {
+    /**
+     * Get an element's distance from the top of the Document.
+     * @param  {Node} elem The element
+     * @return {Number}    Distance from the top in pixels
+     */
+    var getOffsetTop = function (elem) {
+      var location = 0;
+      if (elem.offsetParent) {
+        while (elem) {
+          location += elem.offsetTop;
+          elem = elem.offsetParent;
+        }
+      }
+      return location >= 0 ? location : 0;
+    };
 
-		// Make sure events are enabled
-		if (!detail.settings.events) return;
+    /**
+     * Sort content from first to last in the DOM
+     * @param  {Array} contents The content areas
+     */
+    var sortContents = function (contents) {
+      if (contents) {
+        contents.sort(function (item1, item2) {
+          var offset1 = getOffsetTop(item1.content);
+          var offset2 = getOffsetTop(item2.content);
+          if (offset1 < offset2) return -1;
+          return 1;
+        });
+      }
+    };
 
-		// Create a new event
-		var event = new CustomEvent(type, {
-			bubbles: true,
-			cancelable: true,
-			detail: detail
-		});
+    /**
+     * Get the offset to use for calculating position
+     * @param  {Object} settings The settings for this instantiation
+     * @return {Float}           The number of pixels to offset the calculations
+     */
+    var getOffset = function (settings) {
+      // if the offset is a function run it
+      if (typeof settings.offset === 'function') {
+        return parseFloat(settings.offset());
+      }
 
-		// Dispatch the event
-		elem.dispatchEvent(event);
+      // Otherwise, return it as-is
+      return parseFloat(settings.offset);
+    };
 
-	};
+    /**
+     * Get the document element's height
+     * @private
+     * @returns {Number}
+     */
+    var getDocumentHeight = function () {
+      return Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+      );
+    };
 
-	/**
-	 * Get an element's distance from the top of the Document.
-	 * @param  {Node} elem The element
-	 * @return {Number}    Distance from the top in pixels
-	 */
-	var getOffsetTop = function (elem) {
-		var location = 0;
-		if (elem.offsetParent) {
-			while (elem) {
-				location += elem.offsetTop;
-				elem = elem.offsetParent;
-			}
-		}
-		return location >= 0 ? location : 0;
-	};
+    /**
+     * Determine if an element is in view
+     * @param  {Node}    elem     The element
+     * @param  {Object}  settings The settings for this instantiation
+     * @param  {Boolean} bottom   If true, check if element is above bottom of viewport instead
+     * @return {Boolean}          Returns true if element is in the viewport
+     */
+    var isInView = function (elem, settings, bottom) {
+      var bounds = elem.getBoundingClientRect();
+      var offset = getOffset(settings);
+      if (bottom) {
+        return (
+          parseInt(bounds.bottom, 10) <
+          (window.innerHeight || document.documentElement.clientHeight)
+        );
+      }
+      return parseInt(bounds.top, 10) <= offset;
+    };
 
-	/**
-	 * Sort content from first to last in the DOM
-	 * @param  {Array} contents The content areas
-	 */
-	var sortContents = function (contents) {
-		if(contents) {
-			contents.sort((function (item1, item2) {
-				var offset1 = getOffsetTop(item1.content);
-				var offset2 = getOffsetTop(item2.content);
-				if (offset1 < offset2) return -1;
-				return 1;
-			}));
-		}
-	};
+    /**
+     * Check if at the bottom of the viewport
+     * @return {Boolean} If true, page is at the bottom of the viewport
+     */
+    var isAtBottom = function () {
+      if (window.innerHeight + window.pageYOffset >= getDocumentHeight())
+        return true;
+      return false;
+    };
 
-	/**
-	 * Get the offset to use for calculating position
-	 * @param  {Object} settings The settings for this instantiation
-	 * @return {Float}           The number of pixels to offset the calculations
-	 */
-	var getOffset = function (settings) {
+    /**
+     * Check if the last item should be used (even if not at the top of the page)
+     * @param  {Object} item     The last item
+     * @param  {Object} settings The settings for this instantiation
+     * @return {Boolean}         If true, use the last item
+     */
+    var useLastItem = function (item, settings) {
+      if (isAtBottom() && isInView(item.content, settings, true)) return true;
+      return false;
+    };
 
-		// if the offset is a function run it
-		if (typeof settings.offset === 'function') {
-			return parseFloat(settings.offset());
-		}
+    /**
+     * Get the active content
+     * @param  {Array}  contents The content areas
+     * @param  {Object} settings The settings for this instantiation
+     * @return {Object}          The content area and matching navigation link
+     */
+    var getActive = function (contents, settings) {
+      var last = contents[contents.length - 1];
+      if (useLastItem(last, settings)) return last;
+      for (var i = contents.length - 1; i >= 0; i--) {
+        if (isInView(contents[i].content, settings)) return contents[i];
+      }
+    };
 
-		// Otherwise, return it as-is
-		return parseFloat(settings.offset);
+    /**
+     * Return the element for the active class toggle
+     * @param {Node} nav The navigation eleemnt
+     * @param {Object} settings The settings for this instantiation
+     */
+    var getNodeToActivate = function (nav, settings) {
+      return settings.activeNavTag ? nav.closest(settings.activeNavTag) : nav;
+    };
 
-	};
+    /**
+     * Deactivate parent navs in a nested navigation
+     * @param  {Node}   nav      The starting navigation element
+     * @param  {Object} settings The settings for this instantiation
+     */
+    var deactivateNested = function (nav, settings) {
+      // If nesting isn't activated, bail
+      if (!settings.nested || !nav.parentNode) return;
 
-	/**
-	 * Get the document element's height
-	 * @private
-	 * @returns {Number}
-	 */
-	var getDocumentHeight = function () {
-		return Math.max(
-			document.body.scrollHeight, document.documentElement.scrollHeight,
-			document.body.offsetHeight, document.documentElement.offsetHeight,
-			document.body.clientHeight, document.documentElement.clientHeight
-		);
-	};
+      // Get the parent navigation
+      var activeEl = getNodeToActivate(nav.parentNode, settings);
+      if (!activeEl) return;
 
-	/**
-	 * Determine if an element is in view
-	 * @param  {Node}    elem     The element
-	 * @param  {Object}  settings The settings for this instantiation
-	 * @param  {Boolean} bottom   If true, check if element is above bottom of viewport instead
-	 * @return {Boolean}          Returns true if element is in the viewport
-	 */
-	var isInView = function (elem, settings, bottom) {
-		var bounds = elem.getBoundingClientRect();
-		var offset = getOffset(settings);
-		if (bottom) {
-			return parseInt(bounds.bottom, 10) < (window.innerHeight || document.documentElement.clientHeight);
-		}
-		return parseInt(bounds.top, 10) <= offset;
-	};
+      // Remove the active class
+      activeEl.classList.remove(settings.nestedClass);
 
-	/**
-	 * Check if at the bottom of the viewport
-	 * @return {Boolean} If true, page is at the bottom of the viewport
-	 */
-	var isAtBottom = function () {
-		if (window.innerHeight + window.pageYOffset >= getDocumentHeight()) return true;
-		return false;
-	};
-
-	/**
-	 * Check if the last item should be used (even if not at the top of the page)
-	 * @param  {Object} item     The last item
-	 * @param  {Object} settings The settings for this instantiation
-	 * @return {Boolean}         If true, use the last item
-	 */
-	var useLastItem = function (item, settings) {
-		if (isAtBottom() && isInView(item.content, settings, true)) return true;
-		return false;
-	};
-
-	/**
-	 * Get the active content
-	 * @param  {Array}  contents The content areas
-	 * @param  {Object} settings The settings for this instantiation
-	 * @return {Object}          The content area and matching navigation link
-	 */
-	var getActive = function (contents, settings) {
-		var last = contents[contents.length-1];
-		if (useLastItem(last, settings)) return last;
-		for (var i = contents.length - 1; i >= 0; i--) {
-			if (isInView(contents[i].content, settings)) return contents[i];
-		}
-  };
-
-  /**
-   * Return the element for the active class toggle
-   * @param {Node} nav The navigation eleemnt
-   * @param {Object} settings The settings for this instantiation
-   */
-  var getNodeToActivate = function (nav, settings) {
-    return settings.activeNavTag
-      ? nav.closest(settings.activeNavTag)
-      : nav;
-  };
-
-	/**
-	 * Deactivate parent navs in a nested navigation
-	 * @param  {Node}   nav      The starting navigation element
-	 * @param  {Object} settings The settings for this instantiation
-	 */
-	var deactivateNested = function (nav, settings) {
-
-		// If nesting isn't activated, bail
-		if (!settings.nested || !nav.parentNode) return;
-
-		// Get the parent navigation
-		var activeEl = getNodeToActivate(items.nav, settings);
-		if (!activeEl) return;
-
-		// Remove the active class
-		activeEl.classList.remove(settings.nestedClass);
-
-		// Apply recursively to any parent navigation elements
-		deactivateNested(activeEl, settings);
-
-	};
-
-	/**
-	 * Deactivate a nav and content area
-	 * @param  {Object} items    The nav item and content to deactivate
-	 * @param  {Object} settings The settings for this instantiation
-	 */
-	var deactivate = function (items, settings) {
-
-		// Make sure there are items to deactivate
-		if (!items) return;
-
-		// Get the parent list item
-		var activeEl = getNodeToActivate(items.nav, settings);
-		if (!activeEl) return;
-
-		// Remove the active class from the nav and content
-		activeEl.classList.remove(settings.navClass);
-		items.content.classList.remove(settings.contentClass);
-
-    // Deactivate any parent navs in a nested navigation
-    if (items.nav !== activeEl) {
+      // Apply recursively to any parent navigation elements
       deactivateNested(activeEl, settings);
-    }
+    };
 
-		// Emit a custom event
-		emitEvent('gumshoeDeactivate', activeEl, {
-			link: items.nav,
-			content: items.content,
-			settings: settings
-		});
+    /**
+     * Deactivate a nav and content area
+     * @param  {Object} items    The nav item and content to deactivate
+     * @param  {Object} settings The settings for this instantiation
+     */
+    var deactivate = function (items, settings) {
+      // Make sure there are items to deactivate
+      if (!items) return;
 
-	};
+      // Get the parent list item
+      var activeEl = getNodeToActivate(items.nav, settings);
+      if (!activeEl) return;
 
-	/**
-	 * Activate parent navs in a nested navigation
-	 * @param  {Node}   nav      The starting navigation element
-	 * @param  {Object} settings The settings for this instantiation
-	 */
-	var activateNested = function (nav, settings) {
+      // Remove the active class from the nav and content
+      activeEl.classList.remove(settings.navClass);
+      items.content.classList.remove(settings.contentClass);
 
-		// If nesting isn't activated, bail
-		if (!settings.nested) return;
+      // Deactivate any parent navs in a nested navigation
+      if (items.nav !== activeEl) {
+        deactivateNested(activeEl, settings);
+      }
 
-		// Get the parent navigation
-		var activeEl = getNodeToActivate(items.nav, settings);
-		if (!activeEl) return;
+      // Emit a custom event
+      emitEvent('gumshoeDeactivate', activeEl, {
+        link: items.nav,
+        content: items.content,
+        settings: settings,
+      });
+    };
 
-		// Add the active class
-		activeEl.classList.add(settings.nestedClass);
+    /**
+     * Activate parent navs in a nested navigation
+     * @param  {Node}   nav      The starting navigation element
+     * @param  {Object} settings The settings for this instantiation
+     */
+    var activateNested = function (nav, settings) {
+      // If nesting isn't activated, bail
+      if (!settings.nested) return;
 
-		// Apply recursively to any parent navigation elements
-		activateNested(activeEl, settings);
+      // Get the parent navigation
+      var activeEl = getNodeToActivate(nav.parentNode, settings);
+      if (!activeEl) return;
 
-  };
+      // Add the active class
+      activeEl.classList.add(settings.nestedClass);
 
-	/**
-	 * Activate a nav and content area
-	 * @param  {Object} items    The nav item and content to activate
-	 * @param  {Object} settings The settings for this instantiation
-	 */
-	var activate = function (items, settings) {
-
-		// Make sure there are items to activate
-		if (!items) return;
-
-		// Get the parent list item
-		var activeEl = getNodeToActivate(items.nav, settings);
-		if (!activeEl) return;
-
-		// Add the active class to the nav and content
-		activeEl.classList.add(settings.navClass);
-		items.content.classList.add(settings.contentClass);
-
-    // Activate any parent navs in a nested navigation
-    if (items.nav !== activeEl) {
+      // Apply recursively to any parent navigation elements
       activateNested(activeEl, settings);
-    }
+    };
 
-		// Emit a custom event
-		emitEvent('gumshoeActivate', activeEl, {
-			link: items.nav,
-			content: items.content,
-			settings: settings
-		});
+    /**
+     * Activate a nav and content area
+     * @param  {Object} items    The nav item and content to activate
+     * @param  {Object} settings The settings for this instantiation
+     */
+    var activate = function (items, settings) {
+      // Make sure there are items to activate
+      if (!items) return;
 
-	};
+      // Get the parent list item
+      var activeEl = getNodeToActivate(items.nav, settings);
+      if (!activeEl) return;
 
-	/**
-	 * Create the Constructor object
-	 * @param {String} selector The selector to use for navigation items
-	 * @param {Object} options  User options and settings
-	 */
-	var Constructor = function (selector, options) {
+      // Add the active class to the nav and content
+      activeEl.classList.add(settings.navClass);
+      items.content.classList.add(settings.contentClass);
 
-		//
-		// Variables
-		//
+      // Activate any parent navs in a nested navigation
+      if (items.nav !== activeEl) {
+        activateNested(activeEl, settings);
+      }
 
-		var publicAPIs = {};
-		var navItems, contents, current, timeout, settings;
+      // Emit a custom event
+      emitEvent('gumshoeActivate', activeEl, {
+        link: items.nav,
+        content: items.content,
+        settings: settings,
+      });
+    };
 
+    /**
+     * Create the Constructor object
+     * @param {String} selector The selector to use for navigation items
+     * @param {Object} options  User options and settings
+     */
+    var Constructor = function (selector, options) {
+      //
+      // Variables
+      //
 
-		//
-		// Methods
-		//
+      var publicAPIs = {};
+      var navItems, contents, current, timeout, settings;
 
-		/**
-		 * Set variables from DOM elements
-		 */
-		publicAPIs.setup = function () {
+      //
+      // Methods
+      //
 
-			// Get all nav items
-			navItems = document.querySelectorAll(selector);
+      /**
+       * Set variables from DOM elements
+       */
+      publicAPIs.setup = function () {
+        // Get all nav items
+        navItems = document.querySelectorAll(selector);
 
-			// Create contents array
-			contents = [];
+        // Create contents array
+        contents = [];
 
-			// Loop through each item, get it's matching content, and push to the array
-			Array.prototype.forEach.call(navItems, (function (item) {
+        // Loop through each item, get it's matching content, and push to the array
+        Array.prototype.forEach.call(navItems, function (item) {
+          // Get the content for the nav item
+          var content = document.getElementById(
+            decodeURIComponent(item.hash.substr(1))
+          );
+          if (!content) return;
 
-				// Get the content for the nav item
-				var content = document.getElementById(decodeURIComponent(item.hash.substr(1)));
-				if (!content) return;
+          // Push to the contents array
+          contents.push({
+            nav: item,
+            content: content,
+          });
+        });
 
-				// Push to the contents array
-				contents.push({
-					nav: item,
-					content: content
-				});
+        // Sort contents by the order they appear in the DOM
+        sortContents(contents);
+      };
 
-			}));
+      /**
+       * Detect which content is currently active
+       */
+      publicAPIs.detect = function () {
+        // Get the active content
+        var active = getActive(contents, settings);
 
-			// Sort contents by the order they appear in the DOM
-			sortContents(contents);
+        // if there's no active content, deactivate and bail
+        if (!active) {
+          if (current) {
+            deactivate(current, settings);
+            current = null;
+          }
+          return;
+        }
 
-		};
+        // If the active content is the one currently active, do nothing
+        if (current && active.content === current.content) return;
 
-		/**
-		 * Detect which content is currently active
-		 */
-		publicAPIs.detect = function () {
+        // Deactivate the current content and activate the new content
+        deactivate(current, settings);
+        activate(active, settings);
 
-			// Get the active content
-			var active = getActive(contents, settings);
+        // Update the currently active content
+        current = active;
+      };
 
-			// if there's no active content, deactivate and bail
-			if (!active) {
-				if (current) {
-					deactivate(current, settings);
-					current = null;
-				}
-				return;
-			}
+      /**
+       * Detect the active content on scroll
+       * Debounced for performance
+       */
+      var scrollHandler = function () {
+        // If there's a timer, cancel it
+        if (timeout) {
+          window.cancelAnimationFrame(timeout);
+        }
 
-			// If the active content is the one currently active, do nothing
-			if (current && active.content === current.content) return;
+        // Setup debounce callback
+        timeout = window.requestAnimationFrame(publicAPIs.detect);
+      };
 
-			// Deactivate the current content and activate the new content
-			deactivate(current, settings);
-			activate(active, settings);
+      /**
+       * Update content sorting on resize
+       * Debounced for performance
+       */
+      var resizeHandler = function () {
+        // If there's a timer, cancel it
+        if (timeout) {
+          window.cancelAnimationFrame(timeout);
+        }
 
-			// Update the currently active content
-			current = active;
+        // Setup debounce callback
+        timeout = window.requestAnimationFrame(function () {
+          sortContents(contents);
+          publicAPIs.detect();
+        });
+      };
 
-		};
+      /**
+       * Destroy the current instantiation
+       */
+      publicAPIs.destroy = function () {
+        // Undo DOM changes
+        if (current) {
+          deactivate(current, settings);
+        }
 
-		/**
-		 * Detect the active content on scroll
-		 * Debounced for performance
-		 */
-		var scrollHandler = function (event) {
+        // Remove event listeners
+        window.removeEventListener('scroll', scrollHandler, false);
+        if (settings.reflow) {
+          window.removeEventListener('resize', resizeHandler, false);
+        }
 
-			// If there's a timer, cancel it
-			if (timeout) {
-				window.cancelAnimationFrame(timeout);
-			}
+        // Reset variables
+        contents = null;
+        navItems = null;
+        current = null;
+        timeout = null;
+        settings = null;
+      };
 
-			// Setup debounce callback
-			timeout = window.requestAnimationFrame(publicAPIs.detect);
+      /**
+       * Initialize the current instantiation
+       */
+      var init = function () {
+        // Merge user options into defaults
+        settings = extend(defaults, options || {});
 
-		};
+        // Setup variables based on the current DOM
+        publicAPIs.setup();
 
-		/**
-		 * Update content sorting on resize
-		 * Debounced for performance
-		 */
-		var resizeHandler = function (event) {
+        // Find the currently active content
+        publicAPIs.detect();
 
-			// If there's a timer, cancel it
-			if (timeout) {
-				window.cancelAnimationFrame(timeout);
-			}
+        // Setup event listeners
+        window.addEventListener('scroll', scrollHandler, false);
+        if (settings.reflow) {
+          window.addEventListener('resize', resizeHandler, false);
+        }
+      };
 
-			// Setup debounce callback
-			timeout = window.requestAnimationFrame((function () {
-				sortContents(contents);
-				publicAPIs.detect();
-			}));
+      //
+      // Initialize and return the public APIs
+      //
 
-		};
+      init();
+      return publicAPIs;
+    };
 
-		/**
-		 * Destroy the current instantiation
-		 */
-		publicAPIs.destroy = function () {
+    //
+    // Return the Constructor
+    //
 
-			// Undo DOM changes
-			if (current) {
-				deactivate(current, settings);
-			}
-
-			// Remove event listeners
-			window.removeEventListener('scroll', scrollHandler, false);
-			if (settings.reflow) {
-				window.removeEventListener('resize', resizeHandler, false);
-			}
-
-			// Reset variables
-			contents = null;
-			navItems = null;
-			current = null;
-			timeout = null;
-			settings = null;
-
-		};
-
-		/**
-		 * Initialize the current instantiation
-		 */
-		var init = function () {
-
-			// Merge user options into defaults
-			settings = extend(defaults, options || {});
-
-			// Setup variables based on the current DOM
-			publicAPIs.setup();
-
-			// Find the currently active content
-			publicAPIs.detect();
-
-			// Setup event listeners
-			window.addEventListener('scroll', scrollHandler, false);
-			if (settings.reflow) {
-				window.addEventListener('resize', resizeHandler, false);
-			}
-
-		};
-
-
-		//
-		// Initialize and return the public APIs
-		//
-
-		init();
-		return publicAPIs;
-
-	};
-
-
-	//
-	// Return the Constructor
-	//
-
-	return Constructor;
-
-}));
+    return Constructor;
+  }
+);
