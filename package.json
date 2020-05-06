@@ -22,7 +22,8 @@
   "homepage": "https://github.com/catehawke/distantsuncounselling.com#readme",
   "dependencies": {
     "intersection-observer": "^0.10.0",
-    "lazysizes": "^5.2.0"
+    "lazysizes": "^5.2.0",
+    "gumshoejs": "johnhunter/gumshoe#v5.1.1-fork"
   },
   "devDependencies": {
     "@11ty/eleventy": "^0.10.0",

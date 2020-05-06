@@ -23,7 +23,7 @@
 
   function onDomLoaded() {
     if ('Gumshoe' in window) {
-      new window.Gumshoe('.section-menu a', { activeNavTag: false });
+      new window.Gumshoe('.section-menu a', { activeNavElement: false });
     }
 
     observer.observe(document.querySelector('.sticky-page-nav--shim'));

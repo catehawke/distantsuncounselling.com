@@ -1,3 +1,4 @@
+const path = require('path');
 const { src, dest, series, parallel, watch } = require('gulp');
 const clean = require('gulp-clean');
 const gulpIf = require('gulp-if');
@@ -15,6 +16,7 @@ const jsPath = [
   'src/js/pre/**/*.js',
   require.resolve('intersection-observer'),
   require.resolve('lazysizes'),
+  path.join(path.dirname(require.resolve('gumshoejs')), './gumshoe.js'),
   'src/js/feature/**/*.js',
 ];
 
