@@ -1,0 +1,22 @@
+backend:
+  name: git-gateway
+  branch: master
+
+# These lines should *not* be indented
+publish_mode: editorial_workflow
+media_folder: "site/images"
+public_folder: "/images"
+
+collections:
+  - name: "pages"
+    label: "Pages"
+    files:
+    - name: "home"
+      label: "Homepage"
+      delete: false
+      file: "site/index.md"
+      slug: "{{slug}}"
+      fields:
+        - {label: "Layout", name: "layout", widget: "hidden", default: "layouts/base.njk"}
+        - {label: "Title", name: "title", widget: "string"}
+        - {label: "Body", name: "body", widget: "markdown"}
