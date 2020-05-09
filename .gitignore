@@ -11,3 +11,6 @@ node_modules/
 dist/
 site/css/
 site/js/
+
+# Local Netlify folder
+.netlify
