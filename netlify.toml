@@ -1,6 +1,6 @@
 [build]
   publish = "dist"
-  command = "npm run build"
+  command = "npm run production"
   functions = "functions"
 
 
@@ -10,7 +10,7 @@
 [build.processing.html]
   pretty_urls = true
 [build.processing.images]
-  # compress = true
+  compress = false
 
 [[headers]]
 

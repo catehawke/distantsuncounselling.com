@@ -4,6 +4,7 @@
   "description": "Public website for www.distantsuncounselling.com",
   "author": "Cate Hawke",
   "scripts": {
+    "production": "ELEVENTY_ENV=prod gulp build & eleventy",
     "build": "ELEVENTY_ENV=prod npm run tasks",
     "build:dev": "ELEVENTY_ENV=dev npm run tasks",
     "watch": "ELEVENTY_ENV=dev gulp watch & eleventy --serve",
