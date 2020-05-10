@@ -19,6 +19,6 @@ module.exports = {
         sourceType: 'script',
       },
       env: { browser: true },
-    }
-  ]
+    },
+  ],
 };

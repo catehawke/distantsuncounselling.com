@@ -4,13 +4,13 @@
   "description": "Public website for www.distantsuncounselling.com",
   "author": "Cate Hawke",
   "scripts": {
-    "production": "ELEVENTY_ENV=prod gulp build & eleventy",
+    "production": "ELEVENTY_ENV=prod gulp build && eleventy",
     "build": "ELEVENTY_ENV=prod npm run tasks",
     "build:dev": "ELEVENTY_ENV=dev npm run tasks",
     "watch": "ELEVENTY_ENV=dev gulp watch & eleventy --serve",
-    "serve": "npm run build & serve dist",
+    "serve": "npm run build && serve dist",
     "debug": "ELEVENTY_ENV=dev DEBUG=* npm run tasks",
-    "tasks": "npm run lint & gulp build & eleventy",
+    "tasks": "npm run lint && gulp build && eleventy",
     "clean": "ELEVENTY_ENV=dev gulp clean",
     "lint": "eslint --quiet --cache --no-error-on-unmatched-pattern '**/*.js'"
   },
