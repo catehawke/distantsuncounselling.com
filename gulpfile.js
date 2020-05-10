@@ -1,5 +1,5 @@
-const { src, dest, series, parallel, watch } = require('gulp');
-const clean = require('gulp-clean');
+const { src, dest, parallel, watch } = require('gulp');
+const del = require('del');
 const gulpIf = require('gulp-if');
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
@@ -14,15 +14,6 @@ const sassPath = 'src/sass/*.scss';
 const svgPath = 'src/svg/*.svg';
 const jsPath = [lazysizes, 'src/js/**/*.js'];
 const cleanPath = ['dist/', 'site/css/', 'site/js/'];
-
-function cleanDevEnv() {
-  const options = {
-    read: false,
-    allowEmpty: true,
-  };
-
-  return src(cleanPath, options).pipe(gulpIf(!ENV_PROD, clean()));
-}
 
 function css() {
   const options = {
@@ -53,9 +44,11 @@ function svg() {
   return src(svgPath).pipe(svgo(options)).pipe(dest('site/svg/'));
 }
 
-exports.build = series(cleanDevEnv, parallel(js, css, svg));
+exports.build = parallel(js, css, svg);
 
-exports.clean = cleanDevEnv;
+exports.clean = function () {
+  return del(cleanPath);
+};
 
 exports.watch = function () {
   const options = { ignoreInitial: false };

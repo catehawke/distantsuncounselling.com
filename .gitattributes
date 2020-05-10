@@ -1,1 +1,4 @@
+# lfs is used in NetlifyCMS. If you are not managing content then don't
+# use git-lfs on this repo. Doing so will prevent pull/push to remote.
+
 site/images/*.jpg filter=lfs diff=lfs merge=lfs -text
