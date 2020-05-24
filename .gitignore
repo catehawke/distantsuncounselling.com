@@ -13,4 +13,7 @@ site/css/
 site/js/
 
 # Local Netlify folder
-.netlify
+.Netlify
+
+# Local dev images
+local-images/

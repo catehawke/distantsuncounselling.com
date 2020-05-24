@@ -8,13 +8,23 @@ module.exports = function(eleventyConfig) {
   // Add Nunjucks shortcodes
   eleventyConfig.addNunjucksShortcode("obfuscate", obfuscate);
 
+  eleventyConfig.setTemplateFormats([
+    'md', 'njk'
+  ]);
 
   // Static files
   eleventyConfig.addPassthroughCopy('site/css/');
   eleventyConfig.addPassthroughCopy('site/js/');
-  eleventyConfig.addPassthroughCopy('site/images/');
-  eleventyConfig.addPassthroughCopy('site/svg/');
+  eleventyConfig.addPassthroughCopy('site/icons/');
   eleventyConfig.addPassthroughCopy('site/manifest.json');
+  eleventyConfig.addPassthroughCopy('site/svg/');
+
+  // For non-production environments use local-images
+  if (ENV_PROD) {
+  eleventyConfig.addPassthroughCopy('site/images/');
+  } else {
+    eleventyConfig.addPassthroughCopy({ 'local-images': 'images/' });
+  }
 
   // CMS UI
   eleventyConfig.addPassthroughCopy('site/admin/');
