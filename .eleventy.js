@@ -12,6 +12,7 @@ module.exports = function(eleventyConfig) {
   // Static files
   eleventyConfig.addPassthroughCopy('site/css/');
   eleventyConfig.addPassthroughCopy('site/js/');
+  eleventyConfig.addPassthroughCopy('site/icons/');
   eleventyConfig.addPassthroughCopy('site/images/');
   eleventyConfig.addPassthroughCopy('site/svg/');
   eleventyConfig.addPassthroughCopy('site/manifest.json');
