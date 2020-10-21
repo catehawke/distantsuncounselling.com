@@ -7,6 +7,8 @@ const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 const svgo = require('gulp-svgo');
 
+sass.compiler = require('sass');
+
 const lazysizes = require.resolve('lazysizes');
 
 const ENV_PROD = process.env.ELEVENTY_ENV === 'prod';
@@ -22,7 +24,7 @@ function css() {
 
   return src(sassPath)
     .pipe(gulpIf(!ENV_PROD, sourcemaps.init()))
-    .pipe(sass(options).on('error', sass.logError))
+    .pipe(sass.sync(options).on('error', sass.logError))
     .pipe(gulpIf(!ENV_PROD, sourcemaps.write()))
     .pipe(dest('site/css'));
 }
