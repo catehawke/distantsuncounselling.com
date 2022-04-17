@@ -4,14 +4,13 @@
   "description": "Public website for www.distantsuncounselling.com",
   "author": "Cate Hawke",
   "scripts": {
-    "production": "ELEVENTY_ENV=prod gulp build && eleventy",
-    "build": "ELEVENTY_ENV=prod npm run tasks",
-    "build:dev": "ELEVENTY_ENV=dev npm run tasks",
-    "watch": "ELEVENTY_ENV=dev gulp watch & eleventy --serve",
-    "serve": "npm run build && serve dist",
-    "debug": "ELEVENTY_ENV=dev DEBUG=* npm run tasks",
-    "tasks": "npm run lint && gulp build && eleventy",
-    "clean": "ELEVENTY_ENV=dev gulp clean",
+    "clean": "rm -rf dist/*",
+    "build": "NODE_ENV=production npm run tasks",
+    "build:dev": "npm run tasks",
+    "start": "eleventy --serve",
+    "prod": "NODE_ENV=production eleventy --serve",
+    "debug": "DEBUG=* npm run tasks",
+    "tasks": "npm run lint && eleventy",
     "lint": "eslint --quiet --cache --no-error-on-unmatched-pattern '**/*.js'"
   },
   "repository": {
@@ -21,27 +20,21 @@
   "private": true,
   "license": "UNLICENSED",
   "homepage": "https://github.com/catehawke/distantsuncounselling.com#readme",
-  "dependencies": {
-    "lazysizes": "^5.2.1"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@11ty/eleventy": "^0.11.0",
+    "@11ty/eleventy": "^1.0.0",
     "del": "^6.0.0",
-    "eleventy-plugin-lazyimages": "^2.0.1",
+    "eleventy-load": "^0.3.1",
+    "eleventy-load-css": "^0.3.0",
+    "eleventy-load-file": "^0.1.0",
+    "eleventy-load-html": "^0.1.1",
+    "eleventy-load-js": "^0.1.1",
+    "eleventy-load-sass": "^0.1.2",
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
-    "gulp": "^4.0.2",
-    "gulp-concat": "^2.6.1",
-    "gulp-if": "^3.0.0",
-    "gulp-sass": "^4.1.0",
-    "gulp-sourcemaps": "^2.6.5",
-    "gulp-svgo": "^2.2.1",
-    "gulp-uglify": "^3.0.2",
-    "html-minifier": "^4.0.0",
     "markdown-it": "^12.3.2",
     "prettier": "^2.0.5",
-    "sass": "^1.27.0",
-    "serve": "^11.3.0"
+    "sass": "^1.27.0"
   }
 }

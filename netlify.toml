@@ -1,7 +1,8 @@
 [build]
   publish = "dist"
-  command = "npm run production"
+  command = "npm run build"
   functions = "functions"
+  environment = { NODE_VERSION = "14" }
 
 
 [build.processing]

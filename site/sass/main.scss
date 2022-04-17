@@ -1,5 +1,4 @@
-@import "./variables";
-
+@import './variables';
 
 body {
   margin: 0;
@@ -11,7 +10,12 @@ body {
   color: $color-text;
 }
 
-h1, h2, h3, h4, h5, h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 .heading-text {
   font-family: 'Muli', sans-serif;
   font-weight: 300;
@@ -24,8 +28,12 @@ h1 {
 a {
   text-decoration: none;
 
-  &:link { color: $color-link }
-  &:visited { color: $color-visited }
+  &:link {
+    color: $color-link;
+  }
+  &:visited {
+    color: $color-visited;
+  }
   &:hover,
   &:focus {
     text-decoration: underline;
@@ -62,7 +70,9 @@ footer {
   color: $color-text-inverse;
   a {
     &:link,
-    &:visited { color: $color-text-inverse }
+    &:visited {
+      color: $color-text-inverse;
+    }
   }
 }
 
@@ -75,9 +85,9 @@ footer {
 }
 
 // Lazy responsive images
-img:not([src$=".svg"]) {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-}
+// img:not([src$='.svg']) {
+//   display: block;
+//   width: 100%;
+//   max-width: 100%;
+//   height: auto;
+// }

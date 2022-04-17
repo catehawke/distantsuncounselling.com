@@ -9,11 +9,11 @@
   {%- endif -%}
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300|Open+Sans:400,600&display=swap">
-  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="sass/main.scss">
   <link rel="icon" type="image/png" sizes="64x64" href="/icons/icon-64x64.png">
   <link rel="manifest" href="/manifest.json">
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script async src="/js/main.js"></script>
+  {# <script async src="js/main.js"></script> #}
 </head>
 <body>
 <header class="home-header">
@@ -29,8 +29,8 @@
 <footer>
   <div class="wrapper contact">
     Contact:
-    <div>{% obfuscate site.email, "mailto" %}</div>
-    <div>{% obfuscate site.phone , "tel" %}</div>
+    <div><a href="mailto:{{site.email}}">{{site.email}}</a></div>
+    <div><a href="tel:{{site.phone}}">{{site.phone}}</a></div>
   </div>
 </footer>
 
