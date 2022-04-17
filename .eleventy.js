@@ -1,19 +1,19 @@
 const eleventyLoad = require('eleventy-load');
 const loaderRules = require('./loaderRules');
-const obfuscate = require('./site/_shortcodes/obfuscate');
+const siteData = require('./site/_data/site');
 
 module.exports = function (eleventyConfig) {
   const isProduction = process.env.NODE_ENV === `production`;
 
   eleventyConfig.addPlugin(eleventyLoad, {
-    rules: loaderRules(isProduction),
+    rules: loaderRules({
+      isProduction,
+      obsfuscateValues: [siteData.email, siteData.phone],
+    }),
   });
 
   eleventyConfig.addWatchTarget('./site/sass/');
   eleventyConfig.addWatchTarget('./site/js/');
-
-  // Add Nunjucks shortcodes
-  eleventyConfig.addNunjucksShortcode('obfuscate', obfuscate);
 
   eleventyConfig.setTemplateFormats(['md', 'njk']);
 

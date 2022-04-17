@@ -29,8 +29,8 @@
 <footer>
   <div class="wrapper contact">
     Contact:
-    <div>{% obfuscate site.email, "mailto" %}</div>
-    <div>{% obfuscate site.phone , "tel" %}</div>
+    <div><a href="mailto:{{site.email}}">{{site.email}}</a></div>
+    <div><a href="tel:{{site.phone}}">{{site.phone}}</a></div>
   </div>
 </footer>
 

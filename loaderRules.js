@@ -3,8 +3,9 @@ const eleventyLoadSass = require('eleventy-load-sass');
 const eleventyLoadCss = require('eleventy-load-css');
 const eleventyLoadFile = require('eleventy-load-file');
 const eleventyLoadJs = require('eleventy-load-js');
+const eleventyObfuscate = require('./eleventy-load-obsfuscate');
 
-module.exports = function (isProduction) {
+module.exports = function ({ isProduction, obsfuscateValues }) {
   return [
     {
       test: /\.(html|md|njk)$/,
@@ -13,6 +14,13 @@ module.exports = function (isProduction) {
           loader: eleventyLoadHtml,
           options: {
             minimize: isProduction ? {} : false,
+          },
+        },
+        {
+          loader: eleventyObfuscate,
+          options: {
+            values: obsfuscateValues,
+            enabled: true,
           },
         },
       ],
