@@ -5,10 +5,10 @@
   "author": "Cate Hawke",
   "scripts": {
     "clean": "rm -rf dist/*",
-    "build": "NODE_ENV=production npm run tasks",
+    "build": "ELEVENTY_ENV=prod npm run tasks",
     "build:dev": "npm run tasks",
     "start": "eleventy --serve",
-    "prod": "NODE_ENV=production eleventy --serve",
+    "prod": "ELEVENTY_ENV=prod eleventy --serve",
     "debug": "DEBUG=* npm run tasks",
     "tasks": "npm run lint && eleventy",
     "lint": "eslint --quiet --cache --no-error-on-unmatched-pattern '**/*.js'"
@@ -36,5 +36,8 @@
     "markdown-it": "^12.3.2",
     "prettier": "^2.0.5",
     "sass": "^1.50.1"
+  },
+  "volta": {
+    "node": "14.19.1"
   }
 }

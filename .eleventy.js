@@ -1,9 +1,16 @@
+const path = require('path');
 const eleventyLoad = require('eleventy-load');
 const loaderRules = require('./loaderRules');
-const siteData = require('./site/_data/site');
+
+const dir = {
+  input: 'site',
+  data: '_data',
+  output: 'dist',
+};
 
 module.exports = function (eleventyConfig) {
-  const isProduction = process.env.NODE_ENV === `production`;
+  const isProduction = process.env.ELEVENTY_ENV === `prod`;
+  const siteData = require(path.resolve(dir.input, dir.data, 'site'));
 
   eleventyConfig.addPlugin(eleventyLoad, {
     rules: loaderRules({
@@ -44,15 +51,13 @@ module.exports = function (eleventyConfig) {
   );
 
   return {
+    dir,
     templateFormats: ['njk', 'md'],
     htmlTemplateEngine: 'njk',
     markdownTemplateEngine: 'njk',
     passthroughFileCopy: true,
     pathPrefix: '/',
-    dir: {
-      input: 'site',
-      data: '_data', // relative to input
-      output: 'dist',
-    },
   };
 };
+
+module.exports.dir = dir;

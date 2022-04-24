@@ -2,16 +2,13 @@
   publish = "dist"
   command = "npm run build"
   functions = "functions"
-  environment = { NODE_VERSION = "14" }
 
+[build.environment]
+  NODE_VERSION = "14"
+  ELEVENTY_ENV = "prod"
 
 [build.processing]
-  # we will optimise css and js in our build
   skip_processing = true
-[build.processing.html]
-  pretty_urls = true
-[build.processing.images]
-  compress = false
 
 [[headers]]
 
