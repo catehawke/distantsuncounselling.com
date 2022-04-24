@@ -1,6 +1,6 @@
 const path = require('path');
 const eleventyLoad = require('eleventy-load');
-const loaderRules = require('./loaderRules');
+const loaderRules = require('./utils/loaderRules');
 
 const dir = {
   input: 'site',
