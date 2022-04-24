@@ -1,7 +1,7 @@
 module.exports = {
   ignorePatterns: ['node_modules/', 'dist/', 'site/js'],
   parserOptions: {
-    ecmaVersion: 2017,
+    ecmaVersion: 2020,
     sourceType: 'module',
   },
   env: { node: true },

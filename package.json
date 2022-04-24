@@ -5,13 +5,13 @@
   "author": "Cate Hawke",
   "scripts": {
     "clean": "rm -rf dist/*",
-    "build": "NODE_ENV=production npm run tasks",
-    "build:dev": "npm run tasks",
+    "build": "npm run lint && eleventy",
+    "build:ci": "ELEVENTY_ENV=prod npm run build && npm run test",
     "start": "eleventy --serve",
-    "prod": "NODE_ENV=production eleventy --serve",
-    "debug": "DEBUG=* npm run tasks",
-    "tasks": "npm run lint && eleventy",
-    "lint": "eslint --quiet --cache --no-error-on-unmatched-pattern '**/*.js'"
+    "prod": "ELEVENTY_ENV=prod eleventy --serve",
+    "debug": "DEBUG=* npm run build",
+    "lint": "eslint --quiet --cache --no-error-on-unmatched-pattern '**/*.js'",
+    "test": "ava"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,8 @@
   "homepage": "https://github.com/catehawke/distantsuncounselling.com#readme",
   "dependencies": {},
   "devDependencies": {
-    "@11ty/eleventy": "^1.0.0",
+    "@11ty/eleventy": "^1.0.1",
+    "ava": "^4.2.0",
     "del": "^6.0.0",
     "eleventy-load": "^0.3.1",
     "eleventy-load-css": "^0.3.0",
@@ -33,8 +34,12 @@
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
+    "jsdom": "^19.0.0",
     "markdown-it": "^12.3.2",
     "prettier": "^2.0.5",
-    "sass": "^1.27.0"
+    "sass": "^1.50.1"
+  },
+  "volta": {
+    "node": "14.19.1"
   }
 }
