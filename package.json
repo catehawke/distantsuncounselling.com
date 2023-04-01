@@ -30,7 +30,7 @@
     "eleventy-load-js": "^0.1.1",
     "eleventy-load-sass": "^0.1.2",
     "eslint": "^8.36.0",
-    "eslint-config-prettier": "^8.7.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "jsdom": "^21.1.1",
     "markdown-it": "^13.0.1",
