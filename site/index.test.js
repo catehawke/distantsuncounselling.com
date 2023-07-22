@@ -3,7 +3,7 @@ const loadPage = require('../utils/loadPage');
 
 const page = loadPage('./index.html');
 
-test('html is correct langauge', (t) => {
+test('html is correct language', (t) => {
   t.is(page.getRootAttrs().lang, 'en');
 });
 
@@ -17,7 +17,7 @@ test('header has expected stylesheets', (t) => {
 
   t.is(stylesheets.length, 2);
   t.regex(stylesheets[0], /^https:\/\/fonts.googleapis.com\/css\?(.*)/);
-  t.regex(stylesheets[1], /^\/assets\/(.*).css$/);
+  t.is(stylesheets[1], 'sass/main.css');
 });
 
 test('has header logo', (t) => {
