@@ -1,6 +1,6 @@
 const path = require('path');
-const eleventyLoad = require('eleventy-load');
-const loaderRules = require('./utils/loaderRules');
+const obfuscate = require('./site/_shortcodes/obfuscate');
+const eleventySass = require('@11tyrocks/eleventy-plugin-sass-lightningcss');
 
 const dir = {
   input: 'site',
@@ -10,17 +10,8 @@ const dir = {
 
 module.exports = function (eleventyConfig) {
   const isProduction = process.env.ELEVENTY_ENV === `prod`;
-  const siteData = require(path.resolve(dir.input, dir.data, 'site'));
-
-  eleventyConfig.addPlugin(eleventyLoad, {
-    rules: loaderRules({
-      isProduction,
-      obsfuscateValues: [siteData.email, siteData.phone],
-    }),
-  });
 
   eleventyConfig.addWatchTarget('./site/sass/');
-  eleventyConfig.addWatchTarget('./site/js/');
 
   eleventyConfig.setTemplateFormats(['md', 'njk']);
 
@@ -28,6 +19,11 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('site/icons/');
   eleventyConfig.addPassthroughCopy('site/manifest.json');
   eleventyConfig.addPassthroughCopy('site/svg/');
+
+  eleventyConfig.addPlugin(eleventySass);
+
+  // Add Nunjucks shortcodes
+  eleventyConfig.addNunjucksShortcode('obfuscate', obfuscate);
 
   // For non-production environments use local-images
   if (isProduction) {
