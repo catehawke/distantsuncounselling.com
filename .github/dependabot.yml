@@ -4,5 +4,17 @@ updates:
     directory: /
     schedule:
       interval: weekly
-      day: 'saturday'
-      time: '08:00'
+      day: "saturday"
+      time: "08:00"
+    groups:
+      patches:
+        update-types:
+          - "patch"
+      minor-lint-test:
+        update-types:
+          - "minor"
+        patterns:
+          - "prettier"
+          - "eslint*"
+          - "ava"
+          - "jsdom"
