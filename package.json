@@ -24,7 +24,7 @@
     "@11ty/eleventy": "^2.0.1",
     "@11tyrocks/eleventy-plugin-sass-lightningcss": "^1.0.3",
     "ava": "^5.3.1",
-    "eslint": "^8.48.0",
+    "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "jsdom": "^22.1.0",
