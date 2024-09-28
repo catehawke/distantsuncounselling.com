@@ -10,7 +10,7 @@
     "start": "eleventy --serve",
     "prod": "ELEVENTY_ENV=prod eleventy --serve",
     "debug": "DEBUG=* npm run build",
-    "lint": "eslint --quiet --cache --no-error-on-unmatched-pattern '**/*.js'",
+    "lint": "eslint .",
     "test": "ava"
   },
   "repository": {

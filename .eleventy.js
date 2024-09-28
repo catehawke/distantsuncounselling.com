@@ -1,4 +1,3 @@
-const path = require('path');
 const obfuscate = require('./site/_shortcodes/obfuscate');
 const eleventySass = require('@11tyrocks/eleventy-plugin-sass-lightningcss');
 
