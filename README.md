@@ -4,10 +4,19 @@
 
 ## What is it
 
-A website for distantsuncounselling.com using [Eleventy](https://www.11ty.io) and [Netlify](https://www.netlify.com).
+A website for distantsuncounselling.com using [Eleventy](https://www.11ty.io)
+and [Netlify](https://www.netlify.com).
 
-The site content is written in [Markdown](https://www.markdownguide.org) which is easier to write than html. The markdown files are located in the `site` folder.
+The site content is written in [Markdown](https://www.markdownguide.org) which
+is easier to write than html. The markdown files are located in the `site` folder.
 
 ## Developer notes
 
-This project uses `git-lfs` for content images. If you're not the owner then you will not be able to authenticate for the large media service. When cloning the repo, make sure `git-lfs` is not installed in your local system.
+This project uses `git-lfs` for content images. If you're not the owner then
+you will not be able to authenticate for the large media service. When cloning
+the repo, make sure `git-lfs` is not installed in your local system.
+
+## Tests
+
+End to end tests run with [Playwright](https://playwright.dev/docs/writing-tests).
+To write or debug tests run them locally in the [UI mode](https://playwright.dev/docs/test-ui-mode) `npm test -- --ui`

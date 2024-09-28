@@ -11,6 +11,10 @@ node_modules/
 dist/
 site/css/
 site/js/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
 
 # Local Netlify folder
 .Netlify
