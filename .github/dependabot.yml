@@ -16,5 +16,5 @@ updates:
         patterns:
           - "prettier"
           - "eslint*"
-          - "ava"
+          - "*playwrite*"
           - "jsdom"
