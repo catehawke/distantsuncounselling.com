@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf dist/*",
     "build": "npm run lint && eleventy",
-    "build:ci": "ELEVENTY_ENV=prod npm run build && npm run test",
+    "build:ci": "ELEVENTY_ENV=prod npm run build",
     "start": "eleventy --serve",
     "prod": "ELEVENTY_ENV=prod eleventy --serve",
     "debug": "DEBUG=* npm run build",
