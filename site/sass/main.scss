@@ -1,4 +1,4 @@
-@import "./variables";
+@use "./variables" as var;
 
 body {
   margin: 0;
@@ -7,7 +7,7 @@ body {
 
 body {
   font-family: "Open Sans", sans-serif;
-  color: $color-text;
+  color: var.$color-text;
 }
 
 h1,
@@ -22,17 +22,17 @@ h6,
 }
 
 h1 {
-  color: $color-satellite;
+  color: var.$color-satellite;
 }
 
 a {
   text-decoration: none;
 
   &:link {
-    color: $color-link;
+    color: var.$color-link;
   }
   &:visited {
-    color: $color-visited;
+    color: var.$color-visited;
   }
   &:hover,
   &:focus {
@@ -66,12 +66,12 @@ main {
 }
 
 footer {
-  background-color: $color-sun-1;
-  color: $color-text-inverse;
+  background-color: var.$color-sun-1;
+  color: var.$color-text-inverse;
   a {
     &:link,
     &:visited {
-      color: $color-text-inverse;
+      color: var.$color-text-inverse;
     }
   }
 }
