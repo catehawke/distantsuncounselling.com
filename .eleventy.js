@@ -3,10 +3,12 @@ const eleventySass = require('@11tyrocks/eleventy-plugin-sass-lightningcss');
 
 const dir = {
   input: 'site',
+  includes: '_includes',
   data: '_data',
   output: 'dist',
 };
 
+/** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
 module.exports = function (eleventyConfig) {
   const isProduction = process.env.ELEVENTY_ENV === `prod`;
 
@@ -50,8 +52,6 @@ module.exports = function (eleventyConfig) {
     templateFormats: ['njk', 'md'],
     htmlTemplateEngine: 'njk',
     markdownTemplateEngine: 'njk',
-    passthroughFileCopy: true,
-    pathPrefix: '/',
   };
 };
 

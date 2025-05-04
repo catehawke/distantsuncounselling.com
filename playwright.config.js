@@ -26,7 +26,7 @@ module.exports = defineConfig({
   ],
 
   webServer: {
-    command: 'npm run prod',
+    command: 'npm start',
     url: baseURL,
     reuseExistingServer: !process.env.CI,
   },
