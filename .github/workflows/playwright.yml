@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run Playwright tests
-        uses: docker://mcr.microsoft.com/playwright:v1.52.0-noble
+        uses: docker://mcr.microsoft.com/playwright:v1.53.0-noble
         with:
           args: npx playwright test
       - uses: actions/upload-artifact@v4
